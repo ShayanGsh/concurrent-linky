@@ -6,6 +6,10 @@ import (
 	"sync"
 )
 
+// TODO: add worker pool for inserting
+// TODO: add removing/poping/peeking
+// TODO: implement traversing as a separate function
+
 type Comparable interface {
     CompareTo(other Comparable) int
 }
