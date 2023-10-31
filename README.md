@@ -2,6 +2,8 @@
 
 This repository contains an implementation of a thread-safe ordered (sorted) doubly linked list in Go. The linked list is designed to be safe for concurrent use, meaning multiple goroutines can interact with the list simultaneously without causing data races or inconsistencies.
 
+<b style="color: red;">WARNING</b>: This is a personal project and should not be used in production. It is not guaranteed to be bug-free or secure. Use at your own risk. This was created for educational purposes only.
+
 ## Overview
 
 The linked list is a fundamental data structure in computer science, often used for its simplicity and efficiency in certain operations. An ordered linked list is a variation where the elements are kept sorted at all times. This implementation uses Go's powerful concurrency primitives to ensure that the list remains safe to use in a multi-threaded context.
