@@ -39,7 +39,7 @@ func (l *LinkedList) Insert(val Comparable) {
 	inserted := false
 
 	selected := l.Head
-
+	// TODO: add better insertion logic, it should lock prev and next nodes
 	for !inserted {
 		selected.Lock.Lock()
 		if selected.Val == nil {
