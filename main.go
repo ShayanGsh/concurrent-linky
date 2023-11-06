@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	NumWorkers = 100
-	NumValues  = 100000
+	NumWorkers = 10
+	NumValues  = 10000
 )
 
 
@@ -34,7 +34,7 @@ func main() {
 	// Initialize a large pool of random numbers
 	values := make([]coll.Comparable, NumValues)
 	for i := range values {
-		// values[i] = linkedlist.ComparableString(fmt.Sprintf("%d", i))
+		// values[i] = coll.ComparableString(fmt.Sprintf("%d", i))
 		values[i] = coll.ComparableInt(
 			rand.Intn(NumValues * 1000000),
 		)
@@ -82,11 +82,13 @@ func main() {
 }
 
 func sortValidation(ll *coll.LinkedList) bool {
-	wrongSort := []coll.Comparable{}
+	wrongSort := [][]coll.Comparable{}
+	i := 0
 	for node := ll.Head; node.Next != nil; node = node.Next {
+		i++
 		if node.Val.CompareTo(node.Next.Val) > 0 {
-			wronglySorted := []coll.Comparable{node.Val, node.Next.Val}
-			wrongSort = append(wrongSort, wronglySorted...)
+			wronglySorted := []coll.Comparable{node.Val, node.Next.Val, coll.ComparableInt(i)}
+			wrongSort = append(wrongSort, wronglySorted)
 		}
 	}
 	if len(wrongSort) > 0 {
