@@ -4,14 +4,16 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"time"
 
 	coll "github.com/ShayanGsh/concurrent-linky/coll"
 )
 
 const (
-	NumWorkers = 10
-	NumValues  = 200
+	NumWorkers = 100
+	NumValues  = 100000
 )
+
 
 // Worker function
 func worker(wg *sync.WaitGroup, values <-chan coll.Comparable, cancel <-chan struct{}, ll *coll.LinkedList) {
@@ -27,6 +29,8 @@ func worker(wg *sync.WaitGroup, values <-chan coll.Comparable, cancel <-chan str
 }
 
 func main() {
+	startTimestamp := time.Now();
+	// numbers := []int{5, 3, 1, 4, 9, 7, 10, 8, 2, 6}
 	// Initialize a large pool of random numbers
 	values := make([]coll.Comparable, NumValues)
 	for i := range values {
@@ -34,7 +38,9 @@ func main() {
 		values[i] = coll.ComparableInt(
 			rand.Intn(NumValues * 1000000),
 		)
-
+		// values[i] = coll.ComparableInt(
+		// 	numbers[i],
+		// )
 	}
 
 	// Initialize the linked list
@@ -62,11 +68,30 @@ func main() {
 	// Wait for all workers to finish
 	wg.Wait()
 
+	endTimestamp := time.Now();
 	// Close the values channel
 	close(valueChannel)
-
+	fmt.Println("Time taken: ", endTimestamp.Sub(startTimestamp))
 	// Print the linked list
-	for node := ll.Head; node != nil; node = node.Next {
-		fmt.Println(node.Val)
+	// for node := ll.Head; node != nil; node = node.Next {
+	// 	fmt.Println(node.Val)
+	// }
+
+	// Validate the linked list
+	fmt.Println("Is sorted: ", sortValidation(ll))
+}
+
+func sortValidation(ll *coll.LinkedList) bool {
+	wrongSort := []coll.Comparable{}
+	for node := ll.Head; node.Next != nil; node = node.Next {
+		if node.Val.CompareTo(node.Next.Val) > 0 {
+			wronglySorted := []coll.Comparable{node.Val, node.Next.Val}
+			wrongSort = append(wrongSort, wronglySorted...)
+		}
 	}
+	if len(wrongSort) > 0 {
+		fmt.Println("Wrongly sorted: ", wrongSort)
+		return false
+	}
+	return true
 }

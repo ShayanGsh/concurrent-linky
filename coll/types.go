@@ -7,6 +7,7 @@ import (
 
 type Comparable interface {
     CompareTo(other Comparable) int
+    Value() interface{}
 }
 
 type ComparableString string
@@ -64,4 +65,12 @@ func (ci ComparableInt) CompareTo(other Comparable) int {
         log.Println("Error: Comparing different types")
         return 0
     }
+}
+
+func (cs ComparableString) Value() interface{} {
+    return string(cs)
+}
+
+func (ci ComparableInt) Value() interface{} {
+    return int(ci)
 }
